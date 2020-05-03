@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactRouterProps from 'react-router-prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import Card from '../components/Card/Card';
 
@@ -102,7 +103,16 @@ class Feed extends Component {
     const { match } = this.props;
 
     if (loading || error) {
-      return <Alert>{loading ? 'Loading...' : error}</Alert>;
+      return (
+        <>
+          <Helmet>
+            <title>Q&A Feed - Questions</title>
+          </Helmet>
+          <Alert>
+            {loading ? 'Loading...' : error}
+          </Alert>
+        </>
+      );
     }
 
     return (

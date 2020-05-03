@@ -4,6 +4,7 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import App from '../src/containers/App';
 
@@ -20,6 +21,7 @@ app.get('/*', (req, res) => {
       <App />
     </Router>
   );
+  const helmet = Helmet.renderStatic();
 
   const indexFile = path.resolve('./build/index.html');
   fs.readFile(indexFile, 'utf-8', (err, data) => {
@@ -31,6 +33,11 @@ app.get('/*', (req, res) => {
 
     // eslint-disable-next-line no-param-reassign
     data = data.replace('<div id="root"></div>', `<div id="root">${app}</div>`);
+    // eslint-disable-next-line no-param-reassign
+    data = data.replace(
+      '<meta name="helmet" />',
+      `${helmet.title.toString()}${helmet.meta.toString()}`
+    );
 
     return res.send(data);
   });
